@@ -327,9 +327,15 @@ function setOctaveMode(mode) {
 
 function getNearestMacroDegree(freq) {
   const cents = 1200 * Math.log2(freq / BASE_FREQ)
-  const stepNum = Math.round(cents / CENTS_PER_STEP)
+  // Transposition modes shift the TUNING as well as the notation: in mode T the Scala
+  // tuning is Standard moved by exactly 100·T cents and the part is written T semitones
+  // away. Undo the tuning shift, snap to the 125¢ grid in that frame, then name the
+  // written note — the note shown is the note being played; the mode only changes the
+  // reference grid (colour + cents). See TRANSPOSITION_MODES.md. Standard (T=0) unchanged.
+  const stdCents = cents - 100 * macroOffset
+  const stepNum = Math.round(stdCents / CENTS_PER_STEP)
   const nearestCents = stepNum * CENTS_PER_STEP
-  const deviation = cents - nearestCents
+  const deviation = stdCents - nearestCents
 
   // Map macrotonal step → nearest standard semitone from C3
   // Verified against full conversion key spreadsheet across all octaves
@@ -350,7 +356,7 @@ function getNearestMacroDegree(freq) {
     noteOctave,
     colourGroup,
     colour: COLOURS[colourGroup],
-    targetFreq: BASE_FREQ * Math.pow(2, nearestCents / 1200),
+    targetFreq: BASE_FREQ * Math.pow(2, (nearestCents + 100 * macroOffset) / 1200),
   }
 }
 
