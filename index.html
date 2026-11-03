@@ -231,32 +231,79 @@ html,body{background-color:var(--ab-green) !important; background-image:url(data
   background-size:256px 256px !important; background-repeat:repeat !important}
 @media print{html,body{background-image:none !important}}
 
-:root{ --col-text:var(--ab-cream); --col-sub:var(--ab-cream-dim) }
-body{color:var(--ab-cream)}
+:root{ --col-text:var(--ab-cream); --col-sub:var(--ab-cream-dim); --tn-bg:#0b0b0b; --tn-card:#141414; --tn-rule:rgba(239,231,210,.13) }
+html,body{background-color:var(--tn-bg) !important; background-image:none !important}
+body{color:var(--ab-cream); font-family:var(--ab-book); min-height:100vh; min-height:100svh; overflow-x:hidden; overflow-y:auto}
+.header{justify-content:flex-start; gap:12px; margin-bottom:6px}
+.home{display:block; width:40px; height:40px; color:var(--ab-cream); line-height:0}
+.home svg{width:100%; height:100%}
 .title{font-family:var(--ab-book); font-size:12px; letter-spacing:.3em; color:var(--ab-cream)}
-.colour-badge{font-family:var(--ab-book); letter-spacing:.18em}
-.card{background:var(--ab-green-deep); border-color:var(--ab-rule); border-radius:4px}
-.card.active{box-shadow:0 0 40px rgba(0,0,0,.35), 0 0 0 1px var(--col-dim)}
-.note-big{font-family:var(--ab-sharp); font-weight:normal; letter-spacing:0}
-.degree-num,.cents-num,.intune-badge{font-family:var(--ab-book); font-weight:normal}
+.colour-badge{display:none}
+.card{background:var(--tn-card); border-color:var(--tn-rule); border-radius:4px}
+.card.active{box-shadow:0 0 40px rgba(0,0,0,.5), 0 0 0 1px var(--col-dim)}
+/* the note, big enough to read from a music stand, in its colour; the marking beside it */
+.display-row{min-height:clamp(88px,26vw,116px); align-items:center; gap:12px; margin-bottom:10px}
+/* one face throughout, the buttons' Observer Sharp Book (Sam 2026-11-03) */
+.note-big{font-family:var(--ab-book); font-weight:normal; letter-spacing:0; font-size:clamp(88px,26vw,116px);
+  min-width:0; white-space:nowrap}
+.note-big .acc{height:.5em; width:auto; vertical-align:.2em; margin:0 .02em 0 .04em; fill:currentColor}
+.note-big .oct{font-size:.42em; margin-left:.06em}
+.note-big:not(.active){font-family:var(--ab-book); font-size:13px; letter-spacing:.3em; text-transform:uppercase;
+  color:var(--ab-cream-faint)}
+.degree-info{padding:0; align-items:center}
+.degree-num,.degree-label{display:none}
+.note-mark{color:var(--col); font-family:var(--ab-book); font-size:clamp(26px,7.5vw,34px); line-height:1;
+  display:flex; align-items:center; gap:.1em; transition:color var(--transition)}
+.note-mark:empty{display:none}
+.note-mark .frac{display:inline-flex; flex-direction:column; align-items:center; font-size:.5em; line-height:1.05}
+.note-mark .frac span:first-child{border-bottom:1px solid currentColor; padding:0 .1em .05em}
+.note-mark .acc{height:1em; width:auto; fill:currentColor}
+.freq-row{font-family:var(--ab-book); letter-spacing:.08em; margin-bottom:18px}
 .degree-label,.freq-row,.cents-num,.cents-hz,.meter-labels span{color:var(--ab-cream-faint)}
-.degree-label.active,.freq-row.active,.cents-hz.active{color:var(--ab-cream-dim)}
-.meter-labels span{font-family:var(--ab-book); letter-spacing:.12em}
-.meter-bar{background:rgba(0,0,0,.22); border-radius:2px}
-.meter-centre{background:rgba(239,231,210,.35)}
-.meter-ticks line{stroke:rgba(239,231,210,.16)}
-.intune-badge{border-color:var(--ab-rule); color:var(--ab-cream-faint)}
-.divider{background:var(--ab-rule)}
-/* buttons and the mode menu as cream labels on the green */
+.freq-row.active{color:var(--ab-cream-dim)}
+/* meter: 0, the centre line and IN TUNE on one axis */
+.meter-labels{position:relative; height:12px; margin-bottom:6px}
+.meter-labels span{position:absolute; top:0; font-family:var(--ab-book); letter-spacing:.12em; white-space:nowrap}
+.meter-labels span:nth-child(1){left:0}
+.meter-labels span:nth-child(2){left:25%; transform:translateX(-50%)}
+.meter-labels span:nth-child(3){left:50%; transform:translateX(-50%); letter-spacing:0}
+.meter-labels span:nth-child(4){left:75%; transform:translateX(-50%)}
+.meter-labels span:nth-child(5){right:0}
+.meter-bar{background:rgba(255,255,255,.035); border-radius:2px}
+.meter-centre{background:rgba(239,231,210,.4)}
+.meter-ticks line{stroke:rgba(239,231,210,.14)}
+.cents-row{display:grid; grid-template-columns:1fr auto 1fr; align-items:center; margin-top:12px}
+/* the reading centred under 0; in tune shows on the meter itself (Sam: no IN TUNE box) */
+.cents-num{grid-column:2; grid-row:1; text-align:center; font-family:var(--ab-book); font-weight:normal;
+  font-size:34px; letter-spacing:0; min-width:0}
+.cents-hz,.intune-badge{display:none}
+.meter-labels span:nth-child(3){transition:color .3s ease}
+.card:has(.intune-badge.active) .meter-labels span:nth-child(3){color:var(--col)}
+.card:has(.intune-badge.active) .meter-centre{background:var(--col)}
+.divider{background:var(--tn-rule)}
+.cs-labels{display:flex; gap:8px; margin-top:7px}
+.cs-labels span{flex:1; text-align:center; font-family:var(--ab-book); font-size:9px; letter-spacing:.12em; color:var(--ab-cream-faint)}
+/* buttons and the mode menu as cream labels on the black */
 .start-btn{background:transparent; border-color:var(--ab-rule); color:var(--ab-cream); border-radius:2px;
   font-family:var(--ab-book); letter-spacing:.16em; text-transform:uppercase}
 .start-btn:hover{border-color:var(--ab-cream-dim); color:var(--ab-cream)}
-.start-btn:active{background:rgba(0,0,0,.15)}
-#startBtn{background:var(--ab-cream); color:var(--ab-green); border-color:var(--ab-cream)}
+.start-btn:active{background:rgba(255,255,255,.05)}
+#startBtn{background:var(--ab-cream); color:var(--tn-bg); border-color:var(--ab-cream)}
 #macroModeSelect{background:transparent !important; border-color:var(--ab-rule) !important; color:var(--ab-cream) !important;
   border-radius:2px !important; font-family:var(--ab-book) !important; letter-spacing:.14em !important; text-transform:uppercase}
-#macroModeSelect option{background:var(--ab-green); color:var(--ab-cream)}
+/* a chevron, so it reads as a menu */
+#macroModeSelect{background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 12 8'%3E%3Cpath d='M1 1.5l5 5 5-5' fill='none' stroke='%23efe7d2' stroke-opacity='.7' stroke-width='1.3'/%3E%3C/svg%3E") !important;
+  background-repeat:no-repeat !important; background-position:right 16px center !important; background-size:12px 8px !important}
+#macroModeSelect option{background:var(--tn-card); color:var(--ab-cream)}
 .status{font-family:var(--ab-book); letter-spacing:.16em; text-transform:uppercase; color:var(--ab-cream-dim)}
+/* concert pitch: - A = 440 Hz + */
+.ca-label{margin-top:6px; margin-bottom:-4px}
+.concert-a{display:grid; grid-template-columns:52px 1fr 52px; gap:8px; align-items:stretch}
+.ca-step{padding:0; display:flex; align-items:center; justify-content:center; min-height:42px}
+.ca-step svg{width:12px; height:12px; stroke:currentColor; stroke-width:1.4; fill:none}
+.ca-step:disabled{opacity:.3; cursor:default}
+.ca-read{display:flex; align-items:center; justify-content:center; border:1px solid var(--ab-rule); border-radius:2px;
+  font-family:var(--ab-book); font-size:12px; letter-spacing:.16em; text-transform:uppercase; color:var(--ab-cream)}
 </style>
 </head>
 <body>
@@ -265,20 +312,86 @@ body{color:var(--ab-cream)}
 
 <div class="app">
   <div class="header">
+    <a class="home" href="/" aria-label="Home" title="Home"><svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100">
+<g stroke="currentColor" stroke-width="1.4" stroke-linecap="butt">
+<line x1="50.00" y1="39.20" x2="50.00" y2="4.00"/>
+<line x1="51.13" y1="39.26" x2="54.81" y2="4.25"/>
+<line x1="52.25" y1="39.44" x2="59.56" y2="5.01"/>
+<line x1="53.34" y1="39.73" x2="64.21" y2="6.25"/>
+<line x1="54.39" y1="40.13" x2="68.71" y2="7.98"/>
+<line x1="55.40" y1="40.65" x2="73.00" y2="10.16"/>
+<line x1="56.35" y1="41.26" x2="77.04" y2="12.79"/>
+<line x1="57.23" y1="41.97" x2="80.78" y2="15.82"/>
+<line x1="58.03" y1="42.77" x2="84.18" y2="19.22"/>
+<line x1="58.74" y1="43.65" x2="87.21" y2="22.96"/>
+<line x1="59.35" y1="44.60" x2="89.84" y2="27.00"/>
+<line x1="59.87" y1="45.61" x2="92.02" y2="31.29"/>
+<line x1="60.27" y1="46.66" x2="93.75" y2="35.79"/>
+<line x1="60.56" y1="47.75" x2="94.99" y2="40.44"/>
+<line x1="60.74" y1="48.87" x2="95.75" y2="45.19"/>
+<line x1="60.80" y1="50.00" x2="96.00" y2="50.00"/>
+<line x1="60.74" y1="51.13" x2="95.75" y2="54.81"/>
+<line x1="60.56" y1="52.25" x2="94.99" y2="59.56"/>
+<line x1="60.27" y1="53.34" x2="93.75" y2="64.21"/>
+<line x1="59.87" y1="54.39" x2="92.02" y2="68.71"/>
+<line x1="59.35" y1="55.40" x2="89.84" y2="73.00"/>
+<line x1="58.74" y1="56.35" x2="87.21" y2="77.04"/>
+<line x1="58.03" y1="57.23" x2="84.18" y2="80.78"/>
+<line x1="57.23" y1="58.03" x2="80.78" y2="84.18"/>
+<line x1="56.35" y1="58.74" x2="77.04" y2="87.21"/>
+<line x1="55.40" y1="59.35" x2="73.00" y2="89.84"/>
+<line x1="54.39" y1="59.87" x2="68.71" y2="92.02"/>
+<line x1="53.34" y1="60.27" x2="64.21" y2="93.75"/>
+<line x1="52.25" y1="60.56" x2="59.56" y2="94.99"/>
+<line x1="51.13" y1="60.74" x2="54.81" y2="95.75"/>
+<line x1="50.00" y1="60.80" x2="50.00" y2="96.00"/>
+<line x1="48.87" y1="60.74" x2="45.19" y2="95.75"/>
+<line x1="47.75" y1="60.56" x2="40.44" y2="94.99"/>
+<line x1="46.66" y1="60.27" x2="35.79" y2="93.75"/>
+<line x1="45.61" y1="59.87" x2="31.29" y2="92.02"/>
+<line x1="44.60" y1="59.35" x2="27.00" y2="89.84"/>
+<line x1="43.65" y1="58.74" x2="22.96" y2="87.21"/>
+<line x1="42.77" y1="58.03" x2="19.22" y2="84.18"/>
+<line x1="41.97" y1="57.23" x2="15.82" y2="80.78"/>
+<line x1="41.26" y1="56.35" x2="12.79" y2="77.04"/>
+<line x1="40.65" y1="55.40" x2="10.16" y2="73.00"/>
+<line x1="40.13" y1="54.39" x2="7.98" y2="68.71"/>
+<line x1="39.73" y1="53.34" x2="6.25" y2="64.21"/>
+<line x1="39.44" y1="52.25" x2="5.01" y2="59.56"/>
+<line x1="39.26" y1="51.13" x2="4.25" y2="54.81"/>
+<line x1="39.20" y1="50.00" x2="4.00" y2="50.00"/>
+<line x1="39.26" y1="48.87" x2="4.25" y2="45.19"/>
+<line x1="39.44" y1="47.75" x2="5.01" y2="40.44"/>
+<line x1="39.73" y1="46.66" x2="6.25" y2="35.79"/>
+<line x1="40.13" y1="45.61" x2="7.98" y2="31.29"/>
+<line x1="40.65" y1="44.60" x2="10.16" y2="27.00"/>
+<line x1="41.26" y1="43.65" x2="12.79" y2="22.96"/>
+<line x1="41.97" y1="42.77" x2="15.82" y2="19.22"/>
+<line x1="42.77" y1="41.97" x2="19.22" y2="15.82"/>
+<line x1="43.65" y1="41.26" x2="22.96" y2="12.79"/>
+<line x1="44.60" y1="40.65" x2="27.00" y2="10.16"/>
+<line x1="45.61" y1="40.13" x2="31.29" y2="7.98"/>
+<line x1="46.66" y1="39.73" x2="35.79" y2="6.25"/>
+<line x1="47.75" y1="39.44" x2="40.44" y2="5.01"/>
+<line x1="48.87" y1="39.26" x2="45.19" y2="4.25"/>
+</g>
+<circle cx="50.0" cy="50.0" r="10.9" fill="currentColor"/>
+</svg></a>
     <span class="title">Macro Tuner</span>
     <span class="colour-badge" id="colourBadge">—</span>
   </div>
 
   <div class="card" id="card">
     <div class="display-row">
-      <div class="note-big" id="noteDisplay">—</div>
+      <div class="note-big" id="noteDisplay">Play a note</div>
       <div class="degree-info">
-        <div class="degree-num" id="degreeNum">Deg. —</div>
-        <div class="degree-label" id="degreeLabel">—</div>
+        <div class="note-mark" id="noteMark"></div>
+        <div class="degree-num" id="degreeNum"></div>
+        <div class="degree-label" id="degreeLabel"></div>
       </div>
     </div>
 
-    <div class="freq-row" id="freqRow">— Hz</div>
+    <div class="freq-row" id="freqRow"></div>
 
     <div class="meter-wrap">
       <div class="meter-labels">
@@ -301,7 +414,7 @@ body{color:var(--ab-cream)}
     </div>
 
     <div class="cents-row">
-      <div class="cents-num" id="centsNum">—</div>
+      <div class="cents-num" id="centsNum"></div>
       <div class="intune-badge" id="intuneBadge">in tune</div>
       <div class="cents-hz" id="centsHz"></div>
     </div>
@@ -314,9 +427,10 @@ body{color:var(--ab-cream)}
       <div class="cs-item" id="cs_green"  style="background:#4ed87a;"></div>
       <div class="cs-item" id="cs_blue"   style="background:#5ab4ff;"></div>
     </div>
+    <div class="cs-labels"><span>0&cent;</span><span>+25&cent;</span><span>&minus;50&cent;</span><span>&minus;25&cent;</span></div>
   </div>
 
-  <button class="start-btn" id="startBtn">Allow microphone access to start</button>
+  <button class="start-btn" id="startBtn">Start tuner</button>
   <p class="status" style="margin-bottom:4px;">Transposition Mode</p>
   <select id="macroModeSelect" onchange="onMacroModeChange()"
     style="width:100%;padding:12px 14px;border-radius:12px;border:1px solid #222;background:#151515;color:#888;font-size:12px;letter-spacing:0.03em;cursor:pointer;-webkit-appearance:none;appearance:none;text-align:center;">
@@ -325,6 +439,12 @@ body{color:var(--ab-cream)}
     <button class="start-btn" id="btnMidi"  onclick="setOctaveMode('midi')"  style="font-size:12px;padding:10px;">MIDI</button>
     <button class="start-btn" id="btnScore" onclick="setOctaveMode('score')" style="font-size:12px;padding:10px;">Score</button>
   </div>
+  <p class="status ca-label">Concert pitch</p>
+  <div class="concert-a">
+    <button class="start-btn ca-step" id="caDown" onclick="setConcertA(concertA - 1)" aria-label="Lower concert A by 1 Hz"><svg viewBox="0 0 12 12" aria-hidden="true"><path d="M1 6h10"/></svg></button>
+    <span class="ca-read" id="caRead">A = 440 Hz</span>
+    <button class="start-btn ca-step" id="caUp" onclick="setConcertA(concertA + 1)" aria-label="Raise concert A by 1 Hz"><svg viewBox="0 0 12 12" aria-hidden="true"><path d="M1 6h10M6 1v10"/></svg></button>
+  </div>
   <p class="status" id="status">Tap to begin listening</p>
 </div>
 
@@ -332,6 +452,19 @@ body{color:var(--ab-cream)}
 // ── Tuning system ─────────────────────────────────────────────
 const BASE_FREQ = 261.63   // C3 Ableton = C4 Musescore = 261.63 Hz
 const CENTS_PER_STEP = 125
+const ACC_SVG = {
+  sharp: '<svg class="acc" viewBox="0 0 12 30" aria-label="sharp"><rect x="2.6" y="3" width="1.5" height="25"/><rect x="7.9" y="1" width="1.5" height="25"/><path d="M0 11.2 12 7.6v3.6L0 14.8z"/><path d="M0 19.6 12 16v3.6L0 23.2z"/></svg>',
+  flat:  '<svg class="acc" viewBox="0 0 12 30" aria-label="flat"><path fill-rule="evenodd" d="M1 0h1.6v17.2C5.6 14.4 10.6 13.6 10.6 17.6c0 4-4.6 7.8-9.6 11.6zM2.6 19.8v6.6c3-2.3 5.6-4.6 5.6-7 0-2.4-2.8-2-5.6.4z"/></svg>'
+}
+// the written marking of each colour group: none, 1/8 sharp, 1/4 flat, 1/8 flat
+const MARKS = [null, ['1', '8', 'sharp'], ['1', '4', 'flat'], ['1', '8', 'flat']]
+function noteHTML(d) {
+  return d.noteName.replace('#', ACC_SVG.sharp) + '<span class="oct">' + d.noteOctave + '</span>'
+}
+function markHTML(group) {
+  const m = MARKS[group]
+  return m ? '<span class="frac"><span>' + m[0] + '</span><span>' + m[1] + '</span></span>' + ACC_SVG[m[2]] : ''
+}
 const STD_NOTES = ['C','C#','D','D#','E','F','F#','G','G#','A','A#','B']
 
 // ── Macro transposition modes — matches the converter / QML plugin set ──
@@ -359,7 +492,20 @@ const COLOURS = [
   { name:'Blue',   cls:'blue',   text:'#5ab4ff', bg:'#5ab4ff', glow:'rgba(90,180,255,0.3)'  },
 ]
 
-let octaveMode = 'midi'
+let octaveMode = 'score'
+const CONCERT_A_MIN = 430, CONCERT_A_MAX = 450
+let concertA = 440
+try {
+  const saved = parseInt(localStorage.getItem('macroTuner.concertA'), 10)
+  if (saved >= CONCERT_A_MIN && saved <= CONCERT_A_MAX) concertA = saved
+} catch (e) {}
+function setConcertA(a) {
+  concertA = Math.max(CONCERT_A_MIN, Math.min(CONCERT_A_MAX, a))
+  document.getElementById('caRead').textContent = 'A = ' + concertA + ' Hz'
+  document.getElementById('caDown').disabled = concertA === CONCERT_A_MIN
+  document.getElementById('caUp').disabled = concertA === CONCERT_A_MAX
+  try { localStorage.setItem('macroTuner.concertA', String(concertA)) } catch (e) {}
+}
 
 function setOctaveMode(mode) {
   octaveMode = mode
@@ -375,7 +521,8 @@ function setOctaveMode(mode) {
 }
 
 function getNearestMacroDegree(freq) {
-  const cents = 1200 * Math.log2(freq / BASE_FREQ)
+  const base = BASE_FREQ * (concertA / 440)   // concert pitch A = concertA Hz
+  const cents = 1200 * Math.log2(freq / base)
   // Transposition modes shift the TUNING as well as the notation: in mode T the Scala
   // tuning is Standard moved by exactly 100·T cents and the part is written T semitones
   // away. Undo the tuning shift, snap to the 125¢ grid in that frame, then name the
@@ -405,7 +552,7 @@ function getNearestMacroDegree(freq) {
     noteOctave,
     colourGroup,
     colour: COLOURS[colourGroup],
-    targetFreq: BASE_FREQ * Math.pow(2, (nearestCents + 100 * macroOffset) / 1200),
+    targetFreq: base * Math.pow(2, (nearestCents + 100 * macroOffset) / 1200),
   }
 }
 
@@ -427,10 +574,14 @@ function detectPitch(analyser, sampleRate) {
   rms = Math.sqrt(rms / SIZE)
   if (rms < 0.01) return -1
 
+  // Search bounds: 40-1200 Hz (capped by the window at very high sample rates). Nothing
+  // past maxLag is ever read, so the difference function stops there too
+  const minLag = Math.floor(sampleRate / 1200)  // max 1200 Hz
+  const maxLag = Math.min(HALF - 1, Math.floor(sampleRate / 40))  // min 40 Hz
   // YIN difference function
-  const diff = new Float32Array(HALF)
+  const diff = new Float32Array(maxLag + 1)
   diff[0] = 0
-  for (let tau = 1; tau < HALF; tau++) {
+  for (let tau = 1; tau <= maxLag; tau++) {
     let sum = 0
     for (let i = 0; i < HALF; i++) {
       const d = timeBuf[i] - timeBuf[i + tau]
@@ -440,18 +591,16 @@ function detectPitch(analyser, sampleRate) {
   }
 
   // Cumulative mean normalised difference function
-  const cmndf = new Float32Array(HALF)
+  const cmndf = new Float32Array(maxLag + 1)
   cmndf[0] = 1
   let runningSum = 0
-  for (let tau = 1; tau < HALF; tau++) {
+  for (let tau = 1; tau <= maxLag; tau++) {
     runningSum += diff[tau]
     cmndf[tau] = runningSum > 0 ? diff[tau] * tau / runningSum : 1
   }
 
   // Find first dip below threshold — prefer shortest period (highest freq)
   const THRESHOLD = 0.15
-  const minLag = Math.floor(sampleRate / 1200)  // max 1200 Hz
-  const maxLag = Math.floor(sampleRate / 60)    // min 60 Hz
 
   let bestTau = -1
   for (let tau = minLag; tau < maxLag; tau++) {
@@ -489,6 +638,7 @@ const els = {
   card:         document.getElementById('card'),
   badge:        document.getElementById('colourBadge'),
   noteDisplay:  document.getElementById('noteDisplay'),
+  noteMark:     document.getElementById('noteMark'),
   degreeNum:    document.getElementById('degreeNum'),
   degreeLabel:  document.getElementById('degreeLabel'),
   freqRow:      document.getElementById('freqRow'),
@@ -558,7 +708,7 @@ function updateMeter(cents) {
   const widthPct = Math.abs(needlePct - 50)
   const abs = Math.abs(cents)
   const inTune = abs < 8
-  const col = inTune ? '#44ff88' : abs < 20 ? '#ffcc00' : '#ff4444'
+  const col = inTune ? 'var(--col)' : 'var(--ab-cream)'
 
   fill.style.display = 'block'
   fill.style.left = leftPct + '%'
@@ -566,7 +716,7 @@ function updateMeter(cents) {
   fill.style.background = col
   fill.style.top = inTune ? '0' : '25%'
   fill.style.bottom = inTune ? '0' : '25%'
-  fill.style.boxShadow = inTune ? `0 0 10px ${col}, 0 0 20px ${col}66` : 'none'
+  fill.style.boxShadow = inTune ? '0 0 10px var(--col), 0 0 22px var(--col-dim)' : 'none'
 
   return inTune
 }
@@ -592,7 +742,8 @@ function updateDisplay(freq) {
   applyColour(d.colourGroup, d.colour)
   setActive(true)
 
-  els.noteDisplay.textContent = d.noteName + d.noteOctave
+  els.noteDisplay.innerHTML = noteHTML(d)
+  els.noteMark.innerHTML = markHTML(d.colourGroup)
   els.degreeNum.textContent = 'Deg. ' + d.degreeNumber
   els.degreeLabel.textContent = d.degreeLabel
   els.freqRow.textContent = freq.toFixed(1) + ' Hz  ·  target ' + d.targetFreq.toFixed(1) + ' Hz'
@@ -608,11 +759,12 @@ function clearDisplay() {
   currentColourGroup = -1
   document.documentElement.style.setProperty('--col', '#444')
   document.documentElement.style.setProperty('--col-dim', '#333')
-  els.noteDisplay.textContent = '—'
-  els.degreeNum.textContent = 'Deg. —'
-  els.degreeLabel.textContent = '—'
-  els.freqRow.textContent = '— Hz'
-  els.centsNum.textContent = '—'
+  els.noteDisplay.textContent = 'Play a note'
+  els.noteMark.innerHTML = ''
+  els.degreeNum.textContent = ''
+  els.degreeLabel.textContent = ''
+  els.freqRow.textContent = ''
+  els.centsNum.textContent = ''
   els.centsHz.textContent = ''
   els.intuneBadge.classList.remove('active')
   els.meterFill.style.display = 'none'
@@ -644,7 +796,7 @@ function stableFreq(rawFreq) {
 document.getElementById('startBtn').addEventListener('click', async () => {
   if (running) return
   try {
-    const stream = await navigator.mediaDevices.getUserMedia({ audio: true, video: false })
+    const stream = await navigator.mediaDevices.getUserMedia({ audio: { echoCancellation: false, noiseSuppression: false, autoGainControl: false }, video: false })
     audioCtx = new (window.AudioContext || window.webkitAudioContext)()
     analyser = audioCtx.createAnalyser()
     analyser.fftSize = 8192
@@ -672,8 +824,12 @@ function detect() {
         smoothActive = true
         smoothCents = getNearestMacroDegree(stable).deviation  // seed immediately
       } else {
-        const ratio = stable / smoothFreq
-        if (ratio > 0.5 && ratio < 2.0) smoothFreq += 0.08 * (stable - smoothFreq)
+        if (Math.abs(1200 * Math.log2(stable / smoothFreq)) > CENTS_PER_STEP / 2) {
+          smoothFreq = stable
+          smoothCents = getNearestMacroDegree(stable).deviation
+        } else {
+          smoothFreq += 0.08 * (stable - smoothFreq)
+        }
       }
       const d = getNearestMacroDegree(smoothFreq)
       smoothCents += 0.25 * (d.deviation - smoothCents)
@@ -714,7 +870,8 @@ function onMacroModeChange() {
 initMacroModes()
 
 // Init octave toggle
-setOctaveMode('midi')
+setOctaveMode('score')
+setConcertA(concertA)
 </script>
 </body>
 </html>
