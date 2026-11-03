@@ -271,11 +271,13 @@ body{color:var(--ab-cream); font-family:var(--ab-book); min-height:100vh; min-he
 .meter-labels span:nth-child(5){right:0}
 .meter-bar{background:rgba(255,255,255,.035); border-radius:2px}
 .meter-centre{background:rgba(239,231,210,.4)}
-.meter-ticks line{stroke:rgba(239,231,210,.14)}
+/* the ticks: the svg sized to the bar (it used to render square and fall outside it), hairlines */
+.meter-ticks{width:100%; height:100%}
+.meter-ticks line{stroke:rgba(239,231,210,.14); vector-effect:non-scaling-stroke}
 .cents-row{display:grid; grid-template-columns:1fr auto 1fr; align-items:center; margin-top:12px}
 /* the reading centred under 0; in tune shows on the meter itself (Sam: no IN TUNE box) */
 .cents-num{grid-column:2; grid-row:1; text-align:center; font-family:var(--ab-book); font-weight:normal;
-  font-size:34px; letter-spacing:0; min-width:0}
+  font-size:34px; letter-spacing:0; min-width:0; line-height:1.15; min-height:1.15em}  /* reserved when idle, so the card never jumps */
 .cents-hz,.intune-badge{display:none}
 .meter-labels span:nth-child(3){transition:color .3s ease}
 .card:has(.intune-badge.active) .meter-labels span:nth-child(3){color:var(--col)}
@@ -465,6 +467,8 @@ function markHTML(group) {
   const m = MARKS[group]
   return m ? '<span class="frac"><span>' + m[0] + '</span><span>' + m[1] + '</span></span>' + ACC_SVG[m[2]] : ''
 }
+const IS_IOS = /iPad|iPhone|iPod/.test(navigator.userAgent) ||
+  (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1)
 const STD_NOTES = ['C','C#','D','D#','E','F','F#','G','G#','A','A#','B']
 
 // ── Macro transposition modes — matches the converter / QML plugin set ──
@@ -796,7 +800,7 @@ function stableFreq(rawFreq) {
 document.getElementById('startBtn').addEventListener('click', async () => {
   if (running) return
   try {
-    const stream = await navigator.mediaDevices.getUserMedia({ audio: { echoCancellation: false, noiseSuppression: false, autoGainControl: false }, video: false })
+    const stream = await navigator.mediaDevices.getUserMedia({ audio: IS_IOS ? true : { echoCancellation: false, noiseSuppression: false, autoGainControl: false }, video: false })
     audioCtx = new (window.AudioContext || window.webkitAudioContext)()
     analyser = audioCtx.createAnalyser()
     analyser.fftSize = 8192
